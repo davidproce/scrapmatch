@@ -1,0 +1,50 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
+
+public class CambiarTarjetas {
+
+    public static void main(String[] args) throws IOException {
+        
+        String rutaOriginal = "C:\\Users\\David\\Documents\\scrapbook\\";
+        
+    
+        String rutaModificada = "C:\\Users\\David\\Documents\\scrapbook2\\";
+        
+        // Obtener la lista de archivos en la carpeta original
+        File carpetaOriginal = new File(rutaOriginal);
+        File[] archivosOriginales = carpetaOriginal.listFiles();
+        
+        // Lista de nombres de archivos originales para realizar la selección aleatoria
+        List<String> nombresOriginales = new ArrayList<String>();
+        for (File archivo : archivosOriginales) {
+            nombresOriginales.add(archivo.getName());
+        }
+        
+        // Selección aleatoria de los nombres de archivos originales
+        Collections.shuffle(nombresOriginales);
+        
+        // Iteración sobre los archivos originales y creación de las versiones modificadas
+        for (int i = 0; i < archivosOriginales.length; i++) {
+            // Obtener la imagen original
+            BufferedImage imagenOriginal = ImageIO.read(archivosOriginales[i]);
+            
+            // Obtener el nombre del archivo original
+            String nombreOriginal = archivosOriginales[i].getName();
+            
+            // Obtener el nombre del archivo modificado correspondiente
+            String nombreModificado = nombresOriginales.get(i);
+            
+            // Crear la imagen modificada
+            BufferedImage imagenModificada = ImageIO.read(new File(rutaOriginal + nombreModificado));
+            
+            // Guardar la imagen modificada en la carpeta de destino
+            ImageIO.write(imagenModificada, "jpeg", new File(rutaModificada + nombreOriginal));
+        }
+    }
+}
